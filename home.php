@@ -1,4 +1,5 @@
 <?php
+    
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
@@ -13,7 +14,7 @@
 
     
 
-    $sql = "SELECT fName, lName, phone, email, address, city, province, postal, dob FROM $tblName";
+    $sql = "SELECT id,fName, lName, phone, email, address, city, province, postal, dob FROM $tblName";
 
     $result = mysqli_query($conn, $sql) or die;
     
@@ -27,7 +28,9 @@
                 "<td>" . $row["city"]. "</td>".
                 "<td>". $row["province"]. "</td>".
                 "<td>". $row["postal"]. "</td>".
-                "<td>". $row["dob"]. "</td></tr>";
+                "<td>". $row["dob"]. "</td>" . 
+                "<td> <form action='/project1/edit'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Edit Record</button> </form></td>'" . 
+                "<td> <form action='/project1/delete'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Delete Record</button> </form></td></tr>";
         }
     } else {
         $contact = "0 results";
@@ -45,7 +48,8 @@
     </head>
     <body>
     <h2>All contacts</h2> <br>
-    <a href="/project1/addNew"><input type="button" id="addNew" value="New Contact"></a>
+    <a href="/project1/addNew"><button type="submit" id="addNew" value="New Contact">Add New Contact</button></a>
+        
         <table>
             <tr>
                 <th>Name: </th>
@@ -56,6 +60,8 @@
                 <th>Province: </th>
                 <th>Postal: </th>
                 <th>Date of Birth: </th>
+                <th>Edit Record: </th>
+                <th>Remove Record: </th>
             </tr>
             <?php echo $contact ?>
         </table>

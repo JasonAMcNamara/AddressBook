@@ -1,5 +1,5 @@
 <?php
-    
+
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
@@ -7,14 +7,8 @@
     $dbName = $config["dbName"];
     $tblName = $config["tblName"];
 
-    $conn = mysqli_connect($servername, $username, $password, $dbName);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    $stmt = $conn->prepare("INSERT INTO $tblName (fName, lName, phone, email, address, city, province, postal, dob) VALUES (?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param("sssssssss", $fName, $lName, $phone, $email, $address, $city, $province, $postal, $dob);
-    
+    $conn = mysqli_connect($servername, $username, $password, $dbName) or die;
+    $id=$_GET['id'];
     $fName = $_GET["fName"];
     $lName = $_GET["lName"];
     $phone = $_GET["phone"];
@@ -24,11 +18,12 @@
     $province = $_GET["province"];
     $postal = $_GET["postal"];
     $dob = $_GET["dob"];
-    
-    
+
+    $stmt = $conn->prepare("UPDATE $tblName SET fName=?, lName=?, phone=?, email=?, address=?, city=?, province=?, postal=?, dob=? WHERE id=$id");
+    $stmt->bind_param("sssssssss", $fName, $lName, $phone, $email, $address, $city, $province, $postal, $dob);
     $stmt->execute();
+      
     $stmt->close();
-    
     $conn->close();
     header("Location: /project1/home");
     exit;
