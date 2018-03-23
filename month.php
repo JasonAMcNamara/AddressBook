@@ -8,7 +8,9 @@
         header("Location: /project1");
         exit;
     }
-    
+
+    $currentMonth = date("m");
+
 
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
@@ -43,17 +45,19 @@
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             if($row['UserId'] == $sessionUserID){
-                $contact .=
-                    "<tr><td>" . $row["fName"]. " " . $row["lName"] . "</td>" . 
-                    "<td>" . $row["phone"] . "</td>" .
-                    "<td>". $row["email"] . "</td>" .
-                    "<td>" . $row["address"] . "</td>" .
-                    "<td>" . $row["city"] . "</td>" .
-                    "<td>". $row["province"] . "</td>" .
-                    "<td>". $row["postal"] . "</td>".
-                    "<td>". $row["dob"] . "</td>" . 
-                    "<td> <form action='/project1/edit'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Edit Record</button> </form></td>" . 
-                    "<td> <form action='/project1/delete'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Delete Record</button> </form></td></tr>";
+                if(substr($row['dob'], 5, -3) == $currentMonth){
+                    $contact .=
+                        "<tr><td>" . $row["fName"]. " " . $row["lName"] . "</td>" . 
+                        "<td>" . $row["phone"] . "</td>" .
+                        "<td>". $row["email"] . "</td>" .
+                        "<td>" . $row["address"] . "</td>" .
+                        "<td>" . $row["city"] . "</td>" .
+                        "<td>". $row["province"] . "</td>" .
+                        "<td>". $row["postal"] . "</td>".
+                        "<td>". $row["dob"] . "</td>" . 
+                        "<td> <form action='/project1/edit'> <input type='hidden' name='id' value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Edit Record</button> </form></td>" . 
+                        "<td> <form action='/project1/delete'> <input type='hidden' name='id' value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Delete Record</button> </form></td></tr>";
+                }
             }
         }
     } else {
@@ -61,6 +65,8 @@
     }
 
     $conn->close();
+
+    
 
 ?>
 
@@ -71,10 +77,10 @@
         <title>Document</title>
     </head>
     <body>
-    <h2>All contacts</h2>
+    <h2>Birthdays this month</h2>
     <a href="/project1/logout"><button type="submit" id="logout" value="Logout">Logout</button></a>
     <a href="/project1/addNew"><button type="submit" id="addNew" value="New Contact">Add New Contact</button></a>
-    <a href="/project1/month"><button type="submit" id="monthly" value="monthly">Birthdays this month</button></a>
+    <a href="/project1/home"><button type="submit" id="all" value="all">Back to All</button></a>
         <table>
             <tr>
                 <th>Name: </th>

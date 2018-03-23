@@ -1,10 +1,10 @@
 <?php
-
+$feedback = "";
 if(isset($_POST['submit']))
 {
    verify();
 } 
-$feedback = "";
+
 function verify(){
     
     $user = $_POST["username"];
