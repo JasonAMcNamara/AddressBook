@@ -19,13 +19,16 @@ function verify(){
     
     $conn = mysqli_connect($servername, $username, $password, $dbName) or die;
     
-    $sql = "SELECT id, username, password, hash FROM $tblNameLogin";
+    $sql = "SELECT id, username, hash FROM $tblNameLogin";
     
     $result = mysqli_query($conn, $sql) or die;
     
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             if (password_verify($pass, $row['hash']) == true && $user == $row['username']){
+                session_start();
+                session_unset();
+                $_SESSION['user'] = $user;
                 header("Location: /project1/home");
                 exit;
             } else{
@@ -35,13 +38,6 @@ function verify(){
     } 
     $conn->close();
 }
-
-
-
-
-
-
-
 ?>
 <form method="post" action="/project1/">
   
@@ -52,11 +48,8 @@ function verify(){
 
     <label for="password"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="password" required>
-
-    <button type="submit" name="submit">Login</button>
-    
+    <button type="submit" name="submit">Login</button> 
   </div>
   </div>
- 
 </form>
 <?php echo $feedback ?>

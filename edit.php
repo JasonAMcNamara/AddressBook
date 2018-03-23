@@ -1,5 +1,14 @@
 
 <?php
+    session_start();
+    if (isset($_SESSION['user'])) {
+        $sessionUser = $_SESSION['user'];
+    } else{
+        session_destroy();
+        header("Location: /project1");
+        exit;
+    }
+
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
