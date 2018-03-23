@@ -1,10 +1,19 @@
 <?php
+    session_start();
+    if (isset($_SESSION['user'])) {
+        $sessionUser = $_SESSION['user'];
+    } else{
+        session_destroy();
+        header("Location: /project1");
+        exit;
+    }
+
     $id=$_GET["id"];
 
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
-    $password = "";
+    $password = $config["password"];
     $dbName = $config["dbName"];
     $tblName = $config["tblName"];
 
@@ -16,12 +25,10 @@
     $sql = "DELETE FROM $tblName Where id=$id";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Record deleted successfully";
-    } else {
-        echo "Error deleting record: " . $conn->error;
+        //echo "Record deleted successfully";
     }
     
     $conn->close();
-    header("Location: /project1/home");
+    header("Location: /project1/home.php");
     exit;
-    
+?>

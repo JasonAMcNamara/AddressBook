@@ -1,4 +1,3 @@
-
 <?php
     session_start();
     if (isset($_SESSION['user'])) {
@@ -12,7 +11,7 @@
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
-    $password = "";
+    $password = $config["password"];
     $dbName = $config["dbName"];
     $tblName = $config["tblName"];
 

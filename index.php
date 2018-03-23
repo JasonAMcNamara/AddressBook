@@ -1,6 +1,6 @@
 <?php
 $feedback = "";
-if(isset($_POST['submit']))
+if(isset($_POST['login']))
 {
    verify();
 } 
@@ -13,7 +13,7 @@ function verify(){
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
-    $password = "";
+    $password = $config["password"];
     $dbName = $config["dbName"];
     $tblNameLogin = $config["tblNameLogin"];
     
@@ -29,7 +29,7 @@ function verify(){
                 session_start();
                 session_unset();
                 $_SESSION['user'] = $user;
-                header("Location: /project1/home");
+                header("Location: /project1/home.php");
                 exit;
             } else{
                 $feedback = "Username or Password incorrect";
@@ -48,7 +48,7 @@ function verify(){
 
     <label for="password"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="password" required>
-    <button type="submit" name="submit">Login</button> 
+    <button type="submit" name="login">Login</button> 
   </div>
   </div>
 </form>

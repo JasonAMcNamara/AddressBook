@@ -15,7 +15,7 @@
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
-    $password = "";
+    $password = $config["password"];
     $dbName = $config["dbName"];
     $tblName = $config["tblName"];
     $tblNameLogin = $config["tblNameLogin"];
@@ -55,8 +55,8 @@
                         "<td>". $row["province"] . "</td>" .
                         "<td>". $row["postal"] . "</td>".
                         "<td>". $row["dob"] . "</td>" . 
-                        "<td> <form action='/project1/edit'> <input type='hidden' name='id' value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Edit Record</button> </form></td>" . 
-                        "<td> <form action='/project1/delete'> <input type='hidden' name='id' value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Delete Record</button> </form></td></tr>";
+                        "<td> <form action='/project1/edit.php'> <input type='hidden' name='id' value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Edit Record</button> </form></td>" . 
+                        "<td> <form action='/project1/delete.php'> <input type='hidden' name='id' value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Delete Record</button> </form></td></tr>";
                 }
             }
         }
@@ -78,9 +78,11 @@
     </head>
     <body>
     <h2>Birthdays this month</h2>
-    <a href="/project1/logout"><button type="submit" id="logout" value="Logout">Logout</button></a>
-    <a href="/project1/addNew"><button type="submit" id="addNew" value="New Contact">Add New Contact</button></a>
-    <a href="/project1/home"><button type="submit" id="all" value="all">Back to All</button></a>
+    <a href="/project1/logout.php"><button type="submit" id="logout" value="Logout">Logout</button></a>
+    <a href="/project1/addNew.php"><button type="submit" id="addNew" value="New Contact">Add New Contact</button></a>
+    <a href="/project1/home.php"><button type="submit" id="all" value="all">Back to All</button></a>
+    <a href="/project1/upload.php"><button type="submit" id="loadFile" value="loadFile">Upload a file</button></a>
+    <a href="/project1/save.csv"><button id="download" value="download">Download Contacts</button></a>
         <table>
             <tr>
                 <th>Name: </th>

@@ -13,7 +13,7 @@
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
-    $password = "";
+    $password = $config["password"];
     $dbName = $config["dbName"];
     $tblName = $config["tblName"];
     $tblNameLogin = $config["tblNameLogin"];
@@ -39,7 +39,13 @@
     $sql = "SELECT id,fName, lName, phone, email, address, city, province, postal, dob, UserId FROM $tblName";
     
     $result = mysqli_query($conn, $sql) or die;
-    
+
+    @unlink("save.csv");
+    $file = fopen ("save.csv", "w");
+    @fwrite($file);
+    @fclose($file);
+
+
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             if($row['UserId'] == $sessionUserID){
@@ -52,13 +58,20 @@
                     "<td>". $row["province"] . "</td>" .
                     "<td>". $row["postal"] . "</td>".
                     "<td>". $row["dob"] . "</td>" . 
-                    "<td> <form action='/project1/edit'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Edit Record</button> </form></td>" . 
-                    "<td> <form action='/project1/delete'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Delete Record</button> </form></td></tr>";
-            }
+                    "<td> <form action='/project1/edit.php'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Edit Record</button> </form></td>" . 
+                    "<td> <form action='/project1/delete.php'> <input type='hidden' name='id 'value='" . $row["id"] . "'/><button type='Submit' name='id' value='" . $row["id"] . "'>Delete Record</button> </form></td></tr>";
+            
+                    $input = [$row['id'], $row['fName'], $row['lName'], $row['phone'], $row['email'], $row['address'], $row['city'], $row['province'], $row['postal'], $row['dob'], $row['UserId']];
+                    $file = fopen ("save.csv", "a");
+                    @fputcsv($file,$input);
+                    @fclose($file);
+                }
         }
     } else {
         $contact = "0 results";
     }
+
+    
 
     $conn->close();
 
@@ -72,9 +85,11 @@
     </head>
     <body>
     <h2>All contacts</h2>
-    <a href="/project1/logout"><button type="submit" id="logout" value="Logout">Logout</button></a>
-    <a href="/project1/addNew"><button type="submit" id="addNew" value="New Contact">Add New Contact</button></a>
-    <a href="/project1/month"><button type="submit" id="monthly" value="monthly">Birthdays this month</button></a>
+    <a href="/project1/logout.php"><button type="submit" id="logout" value="Logout">Logout</button></a>
+    <a href="/project1/addNew.php"><button type="submit" id="addNew" value="New Contact">Add New Contact</button></a>
+    <a href="/project1/month.php"><button type="submit" id="monthly" value="monthly">Birthdays this month</button></a>
+    <a href="/project1/upload.php"><button type="submit" id="loadFile" value="loadFile">Upload a file</button></a>
+    <a href="/project1/save.csv"><button id="download" value="download">Download Contacts</button></a>
         <table>
             <tr>
                 <th>Name: </th>

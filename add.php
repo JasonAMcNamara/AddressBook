@@ -10,7 +10,7 @@
     $config = parse_ini_file("dbinfo.ini");
     $servername = $config["servername"];
     $username = $config["username"];
-    $password = "";
+    $password = $config["password"];
     $dbName = $config["dbName"];
     $tblName = $config["tblName"];
 
@@ -38,6 +38,6 @@
     $stmt->close();
     
     $conn->close();
-    header("Location: /project1/home");
+    header("Location: /project1/home.php");
     exit;
     
